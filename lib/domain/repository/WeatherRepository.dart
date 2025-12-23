@@ -3,9 +3,9 @@ import 'package:skycast/domain/model/entity/DailyWeatherModel.dart';
 import 'package:skycast/domain/model/entity/HourlyWeatherModel.dart';
 
 abstract class WeatherRepository {
-  Future<CurrentWeatherModel> getCurrentWeather();
+  Future<CurrentWeatherModel> getCurrentWeather(double lat, double lon);
 
-  Future<HourlyWeatherModel> getHourlyWeather();
+  Future<HourlyWeatherModel> getHourlyWeather(double lat, double lon);
 
-  Future<DailyWeatherModel> getDailyWeather();
+  Future<DailyWeatherModel> getDailyWeather(double lat, double lon);
 }

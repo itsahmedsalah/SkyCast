@@ -10,24 +10,15 @@ import 'package:skycast/domain/repository/WeatherRepository.dart';
 
 class WeatherDataSource implements WeatherRepository {
   final dio = Dio();
-  late String baseUrl;
-  late String hourlyUrl;
-  late String dailyUrl;
 
-  WeatherDataSource(double longitude, double latitude) {
-    baseUrl =
-        "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,weather_code,surface_pressure,wind_speed_10m";
-    hourlyUrl =
-        "https://api.open-meteo.com/v1/forecast"
-        "?latitude=$latitude&longitude=$longitude"
-        "&hourly=apparent_temperature,weather_code";
-    dailyUrl =
-        "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min";
+  String _buildUrl(double lat, double lon, String params) {
+    return "https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&$params";
   }
 
   @override
-  Future<CurrentWeatherModel> getCurrentWeather() async {
-    final response = await dio.get(baseUrl);
+  Future<CurrentWeatherModel> getCurrentWeather(double lat, double lon) async {
+    final url = _buildUrl(lat, lon, "current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,rain,weather_code,surface_pressure,wind_speed_10m");
+    final response = await dio.get(url);
     print(CurrentWeatherDto.fromJson(response.data).current);
     if (response.statusCode == 200) {
       return CurrentWeatherDto.fromJson(response.data).toModel();
@@ -37,8 +28,9 @@ class WeatherDataSource implements WeatherRepository {
   }
 
   @override
-  Future<HourlyWeatherModel> getHourlyWeather() async {
-    final response = await dio.get(hourlyUrl);
+  Future<HourlyWeatherModel> getHourlyWeather(double lat, double lon) async {
+    final url = _buildUrl(lat, lon, "hourly=apparent_temperature,weather_code");
+    final response = await dio.get(url);
 
     if (response.statusCode == 200) {
       return HourlyWeatherDto.fromJson(response.data).toModel();
@@ -48,8 +40,9 @@ class WeatherDataSource implements WeatherRepository {
   }
 
   @override
-  Future<DailyWeatherModel> getDailyWeather() async{
-    final response = await dio.get(dailyUrl);
+  Future<DailyWeatherModel> getDailyWeather(double lat, double lon) async {
+    final url = _buildUrl(lat, lon, "daily=weather_code,temperature_2m_max,temperature_2m_min");
+    final response = await dio.get(url);
 
     if (response.statusCode == 200) {
       return DailyWeatherDto.fromJson(response.data).toModel();
@@ -59,8 +52,3 @@ class WeatherDataSource implements WeatherRepository {
   }
 }
 
-void main() async {
-  var hjhh = WeatherDataSource(30, 30);
-  var ccc = await hjhh.getDailyWeather();
-   print(ccc.maxTemperature);
-}

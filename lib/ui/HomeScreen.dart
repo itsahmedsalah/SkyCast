@@ -60,7 +60,10 @@ class Homescreen extends GetView<WeatherPresenter> {
                   width: 24,
                   height: 24,
                 ),
-                Text("Cairo", style: medTextStyle),
+                Obx(() => Text(
+                  controller.city.value.isEmpty ? "Locating..." : controller.city.value,
+                  style: medTextStyle,
+                )),
               ],
             ),
           ),
@@ -153,8 +156,8 @@ class Homescreen extends GetView<WeatherPresenter> {
               ),
               WeatherDetails(
                 "lib/assets/svgs/temperature.svg",
-                "Rain",
-                "${currentWeather.apparentTemperature}%",
+                "Feels like",
+                "${currentWeather.apparentTemperature}°C",
               ),
             ],
           ),

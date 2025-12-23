@@ -8,17 +8,17 @@ class WeatherUseCase {
 
   WeatherUseCase(this.weatherRepo);
 
-  Future<CurrentWeatherModel> getCurrentWeather() async {
-    return await weatherRepo.getCurrentWeather();
+  Future<CurrentWeatherModel> getCurrentWeather(double lat, double lon) async {
+    return await weatherRepo.getCurrentWeather(lat, lon);
   }
 
-  Future<HourlyWeatherModel> getHourlyWeather() async {
-    HourlyWeatherModel hourlyWeather = await weatherRepo.getHourlyWeather();
+  Future<HourlyWeatherModel> getHourlyWeather(double lat, double lon) async {
+    HourlyWeatherModel hourlyWeather = await weatherRepo.getHourlyWeather(lat, lon);
     return hourlyWeather;
   }
 
-  Future<DailyWeatherModel> getDailyWeather() async {
-    DailyWeatherModel dailyWeatherModel = await weatherRepo.getDailyWeather();
+  Future<DailyWeatherModel> getDailyWeather(double lat, double lon) async {
+    DailyWeatherModel dailyWeatherModel = await weatherRepo.getDailyWeather(lat, lon);
     return dailyWeatherModel;
   }
 
