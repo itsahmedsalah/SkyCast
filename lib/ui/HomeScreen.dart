@@ -23,16 +23,16 @@ class Homescreen extends GetView<WeatherPresenter> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Obx(() {
                   if (controller.isLoading.value) {
                     return const CircularProgressIndicator();
                   }
 
-                  if (controller.errorMessage.value) {
-                    return const Text("Error loading weather");
+                  if (controller.errorMessage.value.isNotEmpty) {
+                    return SkyCastErrorWidget(controller.errorMessage.value);
                   }
-
                   return WeatherContent(controller.weather.value);
                 }),
               ],
@@ -60,10 +60,14 @@ class Homescreen extends GetView<WeatherPresenter> {
                   width: 24,
                   height: 24,
                 ),
-                Obx(() => Text(
-                  controller.city.value.isEmpty ? "Locating..." : controller.city.value,
-                  style: medTextStyle,
-                )),
+                Obx(
+                  () => Text(
+                    controller.city.value.isEmpty
+                        ? "Locating..."
+                        : controller.city.value,
+                    style: medTextStyle,
+                  ),
+                ),
               ],
             ),
           ),
@@ -201,7 +205,7 @@ class Homescreen extends GetView<WeatherPresenter> {
             margin: EdgeInsets.symmetric(horizontal: 12),
             padding: EdgeInsets.symmetric(vertical: 8),
             child: ListView.separated(
-              separatorBuilder: (context,index)=>Divider(
+              separatorBuilder: (context, index) => Divider(
                 color: Colors.grey.withAlpha(50),
                 height: 10,
                 thickness: 1,

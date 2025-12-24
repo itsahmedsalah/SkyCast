@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skycast/theme/AppTheme.dart';
 import 'package:skycast/theme/TextTheme.dart';
 import 'package:skycast/utils/AssestsMap.dart';
@@ -80,7 +81,7 @@ Widget DailyDetails(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(day, style: medTextStyle.copyWith(color: grayText.withAlpha(80))),
-      Image.asset(weatherConditionIcon(weatherCode, isDay),height: 45,),
+      Image.asset(weatherConditionIcon(weatherCode, isDay), height: 45),
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -94,6 +95,18 @@ Widget DailyDetails(
           Text("$minTemp°C", style: medTextStyle.copyWith(fontSize: 14)),
         ],
       ),
+    ],
+  ),
+);
+
+Widget SkyCastErrorWidget(String error) => SizedBox(
+  width: double.infinity,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Lottie.asset("lib/assets/jsons/error.json"),
+      Text(error, style: semiBoldTextStyle.copyWith(fontSize: 24)),
     ],
   ),
 );

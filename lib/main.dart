@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: WeatherBindings(),
       initialRoute: '/home',
+      debugShowCheckedModeBanner: false,
       getPages: [
         GetPage(
           name: '/home',
